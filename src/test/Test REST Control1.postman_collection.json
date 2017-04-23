@@ -61,7 +61,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"name\" : \"Paco Alonso\"\n}"
+					"raw": "{\n\t\"id\" : 1,\n\t\"name\" : \"Paco Alonso\"\n}"
 				},
 				"description": ""
 			},
