@@ -1,6 +1,9 @@
-/**
+package eetac.dsa.control1; /**
  * Created by Home on 19/04/2017.
  */
+
+import eetac.dsa.control1.entity.Uobject;
+import eetac.dsa.control1.entity.User;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -10,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public abstract class EetakemonManagerDB<E> {
+public abstract class EetakemonManagerDB <E> {
 
     protected static String capitalizeName (String name) {
         String capitalizedFieldName;
@@ -80,6 +83,7 @@ public abstract class EetakemonManagerDB<E> {
         }
         return con;
     }
+
     private static void closeConnection(Connection con){
         try{
             con.close();
@@ -130,21 +134,103 @@ public abstract class EetakemonManagerDB<E> {
         closeConnection(con);
     }
 
-    protected List<Object> select() throws Exception {
+    protected Object select() throws Exception {
         StringBuffer buffer = new StringBuffer("SELECT * FROM " + this.getClass().getSimpleName().toLowerCase() + " WHERE ");
         buffer.append(this.getPrimaryKey()).append("=?");
-        Method metodo = this.getClass().getMethod(this.getPKMethod());
-        Object result = metodo.invoke(this,null);
         Connection con=createConnection();
-        System.out.println(buffer);
         PreparedStatement preparedStatement = con.prepareStatement(buffer.toString());
-        preparedStatement.setObject(1,result);
+        preparedStatement.setObject(1,this.getClass().getMethod(this.getPKMethod()).invoke(this,null));
+        ResultSet resultado = preparedStatement.executeQuery();
+        ResultSetMetaData resultSetMetaData = resultado.getMetaData();
+        List<Object> list = result(resultado,resultSetMetaData);
+        preparedStatement.close();
+        closeConnection(con);
+        return list.get(0);
+    }
+
+    protected List<Object> findAll() throws Exception {
+        StringBuffer buffer = new StringBuffer("SELECT * FROM " + this.getClass().getSimpleName().toLowerCase());
+        Connection con=createConnection();
+        PreparedStatement preparedStatement = con.prepareStatement(buffer.toString());
         ResultSet resultado = preparedStatement.executeQuery();
         ResultSetMetaData resultSetMetaData = resultado.getMetaData();
         List<Object> lista = result(resultado,resultSetMetaData);
         preparedStatement.close();
         closeConnection(con);
         return lista;
+    }
+
+    public List<Object> selectObjects(Integer id) throws Exception {
+        StringBuffer buffer = new StringBuffer("SELECT uobject.name, description FROM uobject, user WHERE uobject.user = user.id AND user.id=?");
+        Connection con=createConnection();
+        PreparedStatement preparedStatement = con.prepareStatement(buffer.toString());
+        preparedStatement.setInt(1,id);
+        ResultSet resultado = preparedStatement.executeQuery();
+        ResultSetMetaData resultSetMetaData = resultado.getMetaData();
+        List<Object> lista = result(resultado,resultSetMetaData);
+        preparedStatement.close();
+        closeConnection(con);
+        return lista;
+    }
+
+    public void addobject(Integer id) throws Exception {
+        StringBuffer buffer = new StringBuffer("INSERT INTO uobject(name,description,user) VALUES(?,?,?)");
+        Connection con=createConnection();
+        PreparedStatement preparedStatement = con.prepareStatement(buffer.toString());
+        preparedStatement.setObject(1,this.getClass().getMethod("getName").invoke(this,null));
+        preparedStatement.setObject(2,this.getClass().getMethod("getDescription").invoke(this,null));
+        preparedStatement.setInt(3,id);
+        preparedStatement.executeUpdate();
+        preparedStatement.close();
+        closeConnection(con);
+    }
+
+    protected void update() throws Exception {
+        StringBuffer buffer = new StringBuffer("UPDATE " + this.getClass().getSimpleName().toLowerCase() + " SET ");
+        StringBuffer buffer2 = new StringBuffer("WHERE ");
+        Field[] atributos = this.getClass().getDeclaredFields();
+        Method[] metodos = this.getClass().getMethods();
+        Object result;
+
+        int i;
+        for (i = 0; i < atributos.length - 1; i++) {
+            if(!atributos[i].getName().equals(this.getPrimaryKey())) {
+                buffer.append(atributos[i].getName() + "=?,");
+            }
+            else{
+                buffer2.append(atributos[i].getName() + "=?");
+            }
+        }
+        buffer.append(atributos[i].getName() + "=? ");
+        buffer.append(buffer2);
+
+        PreparedStatement prest;
+        Connection con = createConnection();
+        prest = con.prepareStatement(buffer.toString());
+
+        int PKNotFound = 1;
+        for (i = 0; i < atributos.length; i++) {
+
+            for (Method metodo:metodos) {
+                String s = metodo.getName().toLowerCase();
+                if(s.startsWith("get") && s.contains(atributos[i].getName())) {
+                    result = metodo.invoke(this, null);
+                    if(!atributos[i].getName().equals(this.getPrimaryKey())) {
+                        if(result.getClass().getName() == "java.lang.String") prest.setString(i + PKNotFound, result.toString());
+                        else prest.setInt(i + PKNotFound, (Integer)result);
+                    }
+                    else{
+                        if(result.getClass().getName() == "java.lang.String") prest.setString(atributos.length, result.toString());
+                        else prest.setInt(atributos.length, (Integer)result);
+                        PKNotFound = 0;
+                    }
+                    break;
+                }
+            }
+        }
+        prest.executeUpdate();
+        prest.close();
+        closeConnection(con);
     }
 
     protected List<Object> result (ResultSet resultset, ResultSetMetaData resultsetmetadata) throws Exception{
@@ -160,5 +246,7 @@ public abstract class EetakemonManagerDB<E> {
 
     public abstract String getPrimaryKey();
     public abstract String getPKMethod();
+
+
 
 }

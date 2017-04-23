@@ -1,6 +1,7 @@
-/**
+package eetac.dsa.control1; /**
  * Created by Home on 19/04/2017.
  */
+import org.apache.log4j.Logger;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.grizzly.http.server.StaticHttpHandler;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
@@ -10,7 +11,7 @@ import java.io.IOException;
 import java.net.URI;
 
 /**
- * Main class.
+ * eetac.dsa.control1.Main class.
  *
  */
 public class Main {
@@ -24,7 +25,7 @@ public class Main {
     public static HttpServer startServer() {
         // create a resource config that scans for JAX-RS resources and providers
         // in edu.upc.dsa package
-        final ResourceConfig rc = new ResourceConfig().packages("");
+        final ResourceConfig rc = new ResourceConfig().packages("eetac.dsa.control1");
 
         // create and start a new instance of grizzly http server
         // exposing the Jersey application at BASE_URI
@@ -32,7 +33,7 @@ public class Main {
     }
 
     /**
-     * Main method.
+     * eetac.dsa.control1.Main method.
      * @param args
      * @throws IOException
      */

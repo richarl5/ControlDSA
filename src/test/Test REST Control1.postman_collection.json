@@ -1,0 +1,151 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Test REST Control1",
+		"_postman_id": "7d8df96f-64cd-9125-a6d4-1131bebc550b",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://localhost:8080/eetakemon/add",
+			"request": {
+				"url": "http://localhost:8080/eetakemon/add",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json; charset=UTF-8",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\" : \"Paco\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/eetakemon/add",
+			"request": {
+				"url": "http://localhost:8080/eetakemon/add",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json; charset=UTF-8",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\" : \"Maria\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/eetakemon/user/1/mod",
+			"request": {
+				"url": "http://localhost:8080/eetakemon/user/1/mod",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json; charset=UTF-8",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\" : \"Paco Alonso\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/eetakemon/user/1/addobject",
+			"request": {
+				"url": "http://localhost:8080/eetakemon/user/1/addobject",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json; charset=UTF-8",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\" : \"Coche\",\n\t\"description\" : \"Descapotable\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/eetakemon/user/1/objects",
+			"request": {
+				"url": "http://localhost:8080/eetakemon/user/1/objects",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json; charset=UTF-8",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\" : \"Coche\",\n\t\"description\" : \"Descapotable\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/eetakemon/user/1/",
+			"request": {
+				"url": "http://localhost:8080/eetakemon/user/1/",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json; charset=UTF-8",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\" : \"Coche\",\n\t\"description\" : \"Descapotable\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/eetakemon/allusers",
+			"request": {
+				"url": "http://localhost:8080/eetakemon/allusers",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json; charset=UTF-8",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\" : \"Coche\",\n\t\"description\" : \"Descapotable\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
